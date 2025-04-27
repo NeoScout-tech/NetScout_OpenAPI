@@ -66,4 +66,4 @@ Error responses contain mission-critical intel in the `detail` field.
 
 ---
 
-NetScout — Scan. Analyze. Take control 
+**NetScout — Scan. Analyze. Take control** 
