@@ -23,14 +23,14 @@ def get_me(
     db: Session = Depends(get_db)
 ):
     """
-    Получает информацию о текущем пользователе.
+    Get information about the current user.
     
     Args:
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        UserInDB: Информация о пользователе
+        UserInDB: User information
     """
     user = user_repo.get_by_api_key(db, credentials.credentials)
     if not user:

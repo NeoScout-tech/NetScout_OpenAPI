@@ -27,19 +27,19 @@ def create_report(
     db: Session = Depends(get_db)
 ):
     """
-    Создает новый отчет.
-    Доступно только для создания отчетов для своих устройств.
+    Create a new report.
+    Available only for creating reports for own devices.
     
     Args:
-        report: Данные для создания отчета
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        report: Report creation data
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        ReportInDB: Созданный отчет
+        ReportInDB: Created report
         
     Raises:
-        HTTPException: Если устройство не найдено или нет прав доступа
+        HTTPException: If device not found or no access rights
     """
     api_key = credentials.credentials
     device = db.query(Device).filter(Device.api_key == api_key).first()
@@ -56,14 +56,14 @@ def get_reports(
     db: Session = Depends(get_db)
 ):
     """
-    Получает список отчетов текущего пользователя.
+    Get list of reports for current user.
     
     Args:
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        List[ReportInDB]: Список отчетов пользователя
+        List[ReportInDB]: List of user reports
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
@@ -78,19 +78,19 @@ def get_device_reports(
     db: Session = Depends(get_db)
 ):
     """
-    Получает список отчетов для конкретного устройства.
-    Доступно только для своих устройств.
+    Get list of reports for specific device.
+    Available only for own devices.
     
     Args:
-        device_id: ID устройства
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        device_id: Device ID
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        List[ReportInDB]: Список отчетов устройства
+        List[ReportInDB]: List of device reports
         
     Raises:
-        HTTPException: Если устройство не найдено или нет прав доступа
+        HTTPException: If device not found or no access rights
     """
     api_key = credentials.credentials
     device = db.query(Device).filter(Device.api_key == api_key).first()
@@ -114,19 +114,19 @@ def get_report(
     db: Session = Depends(get_db)
 ):
     """
-    Получает информацию об отчете по ID.
-    Доступно только для просмотра своих отчетов.
+    Get report information by ID.
+    Available only for viewing own reports.
     
     Args:
-        report_id: ID отчета
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        report_id: Report ID
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        ReportInDB: Информация об отчете
+        ReportInDB: Report information
         
     Raises:
-        HTTPException: Если отчет не найден или нет прав доступа
+        HTTPException: If report not found or no access rights
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:

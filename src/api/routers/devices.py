@@ -26,14 +26,14 @@ def get_devices(
     db: Session = Depends(get_db)
 ):
     """
-    Получает список устройств текущего пользователя.
+    Get list of devices for current user.
     
     Args:
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        List[DeviceInDB]: Список устройств пользователя
+        List[DeviceInDB]: List of user devices
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
@@ -48,19 +48,19 @@ def get_device(
     db: Session = Depends(get_db)
 ):
     """
-    Получает информацию об устройстве по ID.
-    Доступно только для просмотра своих устройств.
+    Get device information by ID.
+    Available only for viewing own devices.
     
     Args:
-        device_id: ID устройства
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        device_id: Device ID
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        DeviceInDB: Информация об устройстве
+        DeviceInDB: Device information
         
     Raises:
-        HTTPException: Если устройство не найдено или нет прав доступа
+        HTTPException: If device not found or no access rights
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:

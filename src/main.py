@@ -3,7 +3,7 @@ from src.api import api_router
 
 app = FastAPI(
     title="Netscout API",
-    description="API для управления устройствами Netscout",
+    description="API for Netscout devices",
     version="1.0.0",
     docs_url=None,
     redoc_url="/docs",
@@ -21,14 +21,9 @@ app = FastAPI(
     },
     servers=[
         {
-            "url": "http://localhost:8000",
-            "description": "Local development server"
+            "url": "https://api.netscout.tech",
+            "description": "Production server"
         }
-        # Если нужен продакшен сервер, добавь:
-        # {
-        #     "url": "https://api.netscout.com",
-        #     "description": "Production server"
-        # }
     ]
 )
 

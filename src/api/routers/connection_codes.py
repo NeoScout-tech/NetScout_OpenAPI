@@ -25,19 +25,19 @@ def create_connection_code(
     db: Session = Depends(get_db)
 ):
     """
-    Создает новый код подключения.
-    Доступно только для создания кодов в своем аккаунте.
+    Create a new connection code.
+    Available only for creating codes in own account.
     
     Args:
-        connection_code: Данные для создания кода
-        credentials: Данные авторизации
-        db: Сессия базы данных
+        connection_code: Code creation data
+        credentials: Authorization data
+        db: Database session
         
     Returns:
-        ConnectionCodeInDB: Созданный код подключения
+        ConnectionCodeInDB: Created connection code
         
     Raises:
-        HTTPException: Если нет прав на создание кода
+        HTTPException: If no rights to create code
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:

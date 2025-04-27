@@ -6,17 +6,17 @@ from src.models.user import User
 
 async def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     """
-    Получает текущего пользователя по API ключу из заголовка запроса.
+    Get current user by API key from request header.
     
     Args:
-        request: Запрос FastAPI
-        db: Сессия базы данных
+        request: FastAPI request
+        db: Database session
         
     Returns:
-        User: Объект пользователя
+        User: User object
         
     Raises:
-        HTTPException: Если API ключ не указан или недействителен
+        HTTPException: If API key not provided or invalid
     """
     api_key = request.headers.get("X-API-Key")
     if not api_key:
@@ -31,14 +31,14 @@ async def get_current_user(request: Request, db: Session = Depends(get_db)) -> U
 
 def check_ownership(user_id: int, current_user: User):
     """
-    Проверяет, является ли пользователь владельцем ресурса.
+    Check if user is resource owner.
     
     Args:
-        user_id: ID пользователя-владельца ресурса
-        current_user: Текущий пользователь
+        user_id: Resource owner user ID
+        current_user: Current user
         
     Raises:
-        HTTPException: Если текущий пользователь не является владельцем
+        HTTPException: If current user is not the owner
     """
     if user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not enough permissions") 
