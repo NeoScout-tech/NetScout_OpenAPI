@@ -1,0 +1,126 @@
+@font-face {
+    font-family: 'ShareTechMono';
+    src: url('/static/fonts/ShareTechMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AquireBold';
+    src: url('/static/fonts/AquireBold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+:root {
+    --primary: #02f1f7;
+    --secondary: #00a9b8;
+    --background: #000000;
+    --text: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    font-family: 'ShareTechMono', monospace;
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'AquireBold', sans-serif;
+    color: var(--primary);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+header {
+    background: var(--card-bg);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-family: 'ShareTechMono', monospace;
+}
+
+.nav-link:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* ReDoc стили */
+.redoc-wrap {
+    font-family: 'ShareTechMono', monospace !important;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.redoc-wrap .api-info h1 {
+    font-family: 'AquireBold', sans-serif !important;
+    color: var(--primary) !important;
+}
+
+.redoc-wrap .menu-content {
+    background: var(--card-bg) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.redoc-wrap .api-content {
+    background: var(--card-bg) !important;
+}
+
+.redoc-wrap .operation {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.redoc-wrap .operation .http-verb {
+    background: var(--primary) !important;
+    color: var(--text) !important;
+    border-radius: 4px;
+}
+
+.redoc-wrap button {
+    background: var(--primary);
+    color: var(--text);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.redoc-wrap button:hover {
+    background: var(--secondary);
+}

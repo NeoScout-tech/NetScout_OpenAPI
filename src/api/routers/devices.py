@@ -15,7 +15,7 @@ security = HTTPBearer()
 
 router = APIRouter(
     prefix="/devices",
-    tags=["devices"],
+    tags=["Устройства"],
     dependencies=[Depends(security)]
 )
 device_repo = DeviceRepository(Device)
@@ -26,18 +26,18 @@ def get_devices(
     db: Session = Depends(get_db)
 ):
     """
-    Get list of devices for current user.
+    Получение списка устройств текущего пользователя.
     
     Args:
-        credentials: Authorization data
-        db: Database session
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        List[DeviceInDB]: List of user devices
+        List[DeviceInDB]: Список устройств пользователя
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     return device_repo.get_by_user_id(db, user.id)
 
@@ -48,26 +48,27 @@ def get_device(
     db: Session = Depends(get_db)
 ):
     """
-    Get device information by ID.
-    Available only for viewing own devices.
+    Получение информации об устройстве по ID.
+    
+    Доступно только для просмотра своих устройств.
     
     Args:
-        device_id: Device ID
-        credentials: Authorization data
-        db: Database session
+        device_id: ID устройства
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        DeviceInDB: Device information
+        DeviceInDB: Информация об устройстве
         
     Raises:
-        HTTPException: If device not found or no access rights
+        HTTPException: Если устройство не найдено или нет прав доступа
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     db_device = device_repo.get(db, id=device_id)
     if db_device is None:
-        raise HTTPException(status_code=404, detail="Device not found")
+        raise HTTPException(status_code=404, detail="Устройство не найдено")
     check_ownership(db_device.user_id, user)
     return db_device

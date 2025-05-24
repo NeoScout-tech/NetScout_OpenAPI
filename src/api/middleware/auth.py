@@ -6,39 +6,39 @@ from src.models.user import User
 
 async def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     """
-    Get current user by API key from request header.
+    Получение текущего пользователя по API ключу из заголовка запроса.
     
     Args:
-        request: FastAPI request
-        db: Database session
+        request: FastAPI запрос
+        db: Сессия базы данных
         
     Returns:
-        User: User object
+        User: Объект пользователя
         
     Raises:
-        HTTPException: If API key not provided or invalid
+        HTTPException: Если API ключ не предоставлен или недействителен
     """
     api_key = request.headers.get("X-API-Key")
     if not api_key:
-        raise HTTPException(status_code=401, detail="API key is required")
+        raise HTTPException(status_code=401, detail="Требуется API ключ")
     
     user_repo = UserRepository(User)
     user = user_repo.get_by_api_key(db, api_key)
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+        raise HTTPException(status_code=401, detail="Недействительный API ключ")
     
     return user
 
 def check_ownership(user_id: int, current_user: User):
     """
-    Check if user is resource owner.
+    Проверка, является ли пользователь владельцем ресурса.
     
     Args:
-        user_id: Resource owner user ID
-        current_user: Current user
+        user_id: ID пользователя-владельца ресурса
+        current_user: Текущий пользователь
         
     Raises:
-        HTTPException: If current user is not the owner
+        HTTPException: Если текущий пользователь не является владельцем
     """
     if user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not enough permissions") 
+        raise HTTPException(status_code=403, detail="Недостаточно прав") 

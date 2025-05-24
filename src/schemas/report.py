@@ -3,10 +3,20 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 
+class Host(BaseModel):
+    ip: str
+    status: str
+    ports: List[int]
+    services: List[str]
+    time: datetime
+
+class ReportData(BaseModel):
+    hosts: List[Host]
+
 class ReportBase(BaseModel):
     device_id: str
     location: Optional[str] = None
-    data: List[Dict[str, Any]]
+    data: ReportData
 
 class ReportCreate(ReportBase):
     pass
@@ -16,7 +26,7 @@ class ReportInDB(BaseModel):
     user_id: int
     device_id: str
     location: Optional[str] = None
-    data: List[Dict[str, Any]]
+    data: ReportData
     created_at: datetime
 
     @field_validator("data", mode="before")
@@ -24,11 +34,10 @@ class ReportInDB(BaseModel):
     def validate_data(cls, v):
         if isinstance(v, str):
             try:
-                parsed = json.loads(v)
-                return parsed if isinstance(parsed, list) else [parsed] if parsed else []
-            except json.JSONDecodeError:
-                return []
-        return v if isinstance(v, list) else []
+                return ReportData.model_validate_json(v)
+            except Exception:
+                return ReportData(hosts=[])
+        return v if isinstance(v, ReportData) else ReportData(hosts=[])
 
     class Config:
         from_attributes = True

@@ -11,7 +11,7 @@ security = HTTPBearer()
 
 router = APIRouter(
     prefix="/users",
-    tags=["users"],
+    tags=["пользователи"],
     dependencies=[Depends(security)]
 )
 
@@ -23,17 +23,17 @@ def get_me(
     db: Session = Depends(get_db)
 ):
     """
-    Get information about the current user.
+    Получение информации о текущем пользователе.
     
     Args:
-        credentials: Authorization data
-        db: Database session
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        UserInDB: User information
+        UserInDB: Информация о пользователе
     """
     user = user_repo.get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     return user

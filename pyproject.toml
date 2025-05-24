@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "netscout-api"
-version = "0.1.0"
+name = "neoscout-api"
+version = "0.2.0"
 description = ""
 authors = ["Michail Strukalin <saintklovus@gmail.com>"]
 readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 sqlalchemy = "^2.0.0"
 psycopg2-binary = "^2.9.9"
 fastapi = "^0.109.0"
@@ -15,6 +15,7 @@ uvicorn = "^0.27.0"
 pydantic = {extras = ["email"], version = "^2.11.3"}
 pydantic-settings = "^2.1.0"
 python-dotenv = "^1.0.0"
+jinja2 = "^3.1.6"
 
 [build-system]
 requires = ["poetry-core"]

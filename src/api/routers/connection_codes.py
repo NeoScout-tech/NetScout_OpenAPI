@@ -13,7 +13,7 @@ security = HTTPBearer()
 
 router = APIRouter(
     prefix="/connection-codes",
-    tags=["connection-codes"],
+    tags=["коды-подключения"],
     dependencies=[Depends(security)]
 )
 connection_code_repo = ConnectionCodeRepository(ConnectionCode)
@@ -25,22 +25,23 @@ def create_connection_code(
     db: Session = Depends(get_db)
 ):
     """
-    Create a new connection code.
-    Available only for creating codes in own account.
+    Создание нового кода подключения.
+    
+    Доступно только для создания кодов в своем аккаунте.
     
     Args:
-        connection_code: Code creation data
-        credentials: Authorization data
-        db: Database session
+        connection_code: Данные для создания кода
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        ConnectionCodeInDB: Created connection code
+        ConnectionCodeInDB: Созданный код подключения
         
     Raises:
-        HTTPException: If no rights to create code
+        HTTPException: Если нет прав на создание кода
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     return connection_code_repo.create(db, obj_in=connection_code.model_dump())

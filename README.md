@@ -1,69 +1,69 @@
-# NetScout API
+# NeoScout API
 
-## Mission Briefing
+## Краткое описание
 
-Your API key is your clearance level. Use it wisely.
+Ваш API ключ - это ваш уровень доступа. Используйте его с умом.
 
 ```
 Authorization: Bearer your_api_key
 ```
 
-## Operation Zones
+## Зоны операций
 
-### User Intelligence
+### Информация о пользователе
 ```
 GET /users/me
 ```
-Extract your profile data. Clean and precise.
+Получение данных вашего профиля. Чисто и точно.
 
-### Device Recon
+### Разведка устройств
 ```
 GET /devices
 ```
-Full inventory of your operational units.
+Полный инвентарь ваших операционных единиц.
 
 ```
 GET /devices/{device_id}
 ```
-Deep dive into specific unit specs. Access restricted to your command.
+Детальная информация о конкретном устройстве. Доступ ограничен вашими устройствами.
 
-### Connection Protocol
+### Протокол подключения
 ```
 POST /connection-codes
 ```
-Generate secure handshake codes. Your devices, your rules.
+Генерация защищенных кодов подключения. Ваши устройства, ваши правила.
 
-### Report Analysis
+### Анализ отчетов
 ```
 POST /reports
 ```
-Feed the system with device intel. Requires unit-level clearance.
+Отправка данных от устройств. Требуется уровень доступа устройства.
 
 ```
 GET /reports
 ```
-Access your complete mission log.
+Доступ к полному журналу операций.
 
 ```
 GET /reports/device/{device_id}
 ```
-Extract specific unit's operational history.
+История операций конкретного устройства.
 
 ```
 GET /reports/{report_id}
 ```
-Retrieve detailed mission report. Eyes only.
+Получение детального отчета. Только для ваших глаз.
 
-## Status Codes
+## Коды состояния
 
-- 200: Mission accomplished
-- 401: Clearance denied
-- 403: Access restricted
-- 404: Target not found
-- 500: System compromised
+- 200: Миссия выполнена
+- 401: Доступ запрещен
+- 403: Доступ ограничен
+- 404: Цель не найдена
+- 500: Система скомпрометирована
 
-Error responses contain mission-critical intel in the `detail` field.
+Ответы с ошибками содержат критическую информацию в поле `detail`.
 
 ---
 
-**NetScout — Scan. Analyze. Take control** 
+**NeoScout — Scan. Analyze. Take control** 

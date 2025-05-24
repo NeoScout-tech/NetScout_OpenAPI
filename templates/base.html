@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoScout API - Documentation</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- ReDoc -->
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="/static/images/logo.png" alt="NeoScout Logo" class="logo">
+            <h1>NeoScout API</h1>
+        </div>
+        <nav>
+            <a href="/" class="nav-link">Главная</a>
+            <a href="/docs" class="nav-link">API Документация</a>
+        </nav>
+    </header>
+    <!-- ReDoc Container -->
+    <div class="content">
+        <redoc spec-url="/openapi.json"></redoc>
+    </div>
+    <!-- Custom JavaScript -->
+    <script>
+        Redoc.init(
+            '/openapi.json',
+            {
+                theme: {
+                    colors: {
+                        primary: {
+                            main: '#02f1f7' // --primary
+                        },
+                        text: {
+                            primary: '#ffffff' // --text
+                        },
+                        background: {
+                            main: '#000000' // --background
+                        }
+                    },
+                    typography: {
+                        fontFamily: '"ShareTechMono", monospace',
+                        headings: {
+                            fontFamily: '"AquireBold", sans-serif'
+                        }
+                    },
+                    sidebar: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.05)' // --card-bg
+                    },
+                    logo: {
+                        gutter: '20px'
+                    }
+                }
+            },
+            document.getElementById('redoc-container')
+        );
+    </script>
+</body>
+</html>

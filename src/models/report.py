@@ -25,11 +25,10 @@ class Report(Base):
     def data_dict(self):
         if isinstance(self.data, str):
             try:
-                data = json.loads(self.data)
-                return data if isinstance(data, list) else [data] if data else []
+                return json.loads(self.data)
             except json.JSONDecodeError:
-                return []
-        return self.data if isinstance(self.data, list) else []
+                return {"hosts": []}
+        return self.data if isinstance(self.data, dict) else {"hosts": []}
 
     def to_dict(self):
         return {

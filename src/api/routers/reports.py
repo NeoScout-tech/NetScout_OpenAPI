@@ -15,7 +15,7 @@ security = HTTPBearer()
 
 router = APIRouter(
     prefix="/reports",
-    tags=["reports"],
+    tags=["Отчеты"],
     dependencies=[Depends(security)]
 )
 report_repo = ReportRepository(Report)
@@ -27,24 +27,41 @@ def create_report(
     db: Session = Depends(get_db)
 ):
     """
-    Create a new report.
-    Available only for creating reports for own devices.
+    Создание нового отчета о сканировании.
+    
+    Доступно только для создания отчетов от своих устройств.
     
     Args:
-        report: Report creation data
-        credentials: Authorization data
-        db: Database session
+        report: Данные для создания отчета
+            - device_id: ID устройства
+            - location: Опциональное местоположение
+            - data: Данные отчета в формате:
+                ```json
+                {
+                    "hosts": [
+                        {
+                            "ip": "192.168.1.10",
+                            "status": "active",
+                            "ports": [80, 443],
+                            "services": ["Apache httpd 2.4.49"],
+                            "time": "2024-05-05 10:00:00"
+                        }
+                    ]
+                }
+                ```
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        ReportInDB: Created report
+        ReportInDB: Созданный отчет
         
     Raises:
-        HTTPException: If device not found or no access rights
+        HTTPException: Если устройство не найдено или нет прав доступа
     """
     api_key = credentials.credentials
     device = db.query(Device).filter(Device.api_key == api_key).first()
     if not device:
-        raise HTTPException(status_code=404, detail="Device not found")
+        raise HTTPException(status_code=404, detail="Устройство не найдено")
     
     report_data = report.model_dump()
     report_data["user_id"] = device.user_id
@@ -56,18 +73,18 @@ def get_reports(
     db: Session = Depends(get_db)
 ):
     """
-    Get list of reports for current user.
+    Получение списка отчетов текущего пользователя.
     
     Args:
-        credentials: Authorization data
-        db: Database session
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        List[ReportInDB]: List of user reports
+        List[ReportInDB]: Список отчетов пользователя
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     return report_repo.get_by_user_id(db, user.id)
 
@@ -78,24 +95,25 @@ def get_device_reports(
     db: Session = Depends(get_db)
 ):
     """
-    Get list of reports for specific device.
-    Available only for own devices.
+    Получение списка отчетов для конкретного устройства.
+    
+    Доступно только для просмотра отчетов своих устройств.
     
     Args:
-        device_id: Device ID
-        credentials: Authorization data
-        db: Database session
+        device_id: ID устройства
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        List[ReportInDB]: List of device reports
+        List[ReportInDB]: Список отчетов устройства
         
     Raises:
-        HTTPException: If device not found or no access rights
+        HTTPException: Если устройство не найдено или нет прав доступа
     """
     api_key = credentials.credentials
     device = db.query(Device).filter(Device.api_key == api_key).first()
     if not device:
-        raise HTTPException(status_code=404, detail="Device not found")
+        raise HTTPException(status_code=404, detail="Устройство не найдено")
     
     target_device = db.query(Device).filter(
         Device.id == device_id,
@@ -103,7 +121,7 @@ def get_device_reports(
     ).first()
     
     if not target_device:
-        raise HTTPException(status_code=404, detail="Device not found or access denied")
+        raise HTTPException(status_code=404, detail="Устройство не найдено или доступ запрещен")
     
     return report_repo.get_by_device_id(db, device_id)
 
@@ -114,29 +132,30 @@ def get_report(
     db: Session = Depends(get_db)
 ):
     """
-    Get report information by ID.
-    Available only for viewing own reports.
+    Получение информации об отчете по ID.
+    
+    Доступно только для просмотра своих отчетов.
     
     Args:
-        report_id: Report ID
-        credentials: Authorization data
-        db: Database session
+        report_id: ID отчета
+        credentials: Данные авторизации
+        db: Сессия базы данных
         
     Returns:
-        ReportInDB: Report information
+        ReportInDB: Информация об отчете
         
     Raises:
-        HTTPException: If report not found or no access rights
+        HTTPException: Если отчет не найден или нет прав доступа
     """
     user = UserRepository(User).get_by_api_key(db, credentials.credentials)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
     
     db_report = report_repo.get(db, id=report_id)
     if db_report is None:
-        raise HTTPException(status_code=404, detail="Report not found")
+        raise HTTPException(status_code=404, detail="Отчет не найден")
     
     if db_report.user_id != user.id:
-        raise HTTPException(status_code=403, detail="Not enough permissions")
+        raise HTTPException(status_code=403, detail="Недостаточно прав")
     
     return db_report
